@@ -12,6 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.zonaro.course.entities.enums.OrderStatus;
 
 @Entity
 @Table(name = "tb_order") // para dar o nome no banco de dados
@@ -25,6 +26,8 @@ public class Order implements Serializable {
 
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
 	private Instant moment;
+	
+	private OrderStatus orderStatus;
 
 	@ManyToOne // Anotação para dizer que o meu order pode ter varios Users
 	@JoinColumn(name = "client_id") // Nome da chave estranegira no banco de dados
@@ -57,10 +60,20 @@ public class Order implements Serializable {
 	public void setClient(User client) {
 		this.client = client;
 	}
+	
+	public OrderStatus getOrderStatus() {
+		return orderStatus;
+	}
 
-	public Order(Long id, Instant moment, User client) {
+	public void setOrderStatus(OrderStatus orderStatus) {
+		this.orderStatus = orderStatus;
+	}
+
+
+	public Order(Long id, Instant moment, OrderStatus orderStatus, User client) {
 		this.id = id;
 		this.moment = moment;
+		this.setOrderStatus(orderStatus);
 		this.client = client;
 	}
 
