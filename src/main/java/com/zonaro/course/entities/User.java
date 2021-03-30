@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "tb_user") // para dar o nome no banco de dados 
 public class User implements Serializable{
@@ -25,6 +27,7 @@ public class User implements Serializable{
 	private String phone;
 	private String password;
 	
+	@JsonIgnore // Para não entrr em um loop, ou aqui ou do outro lado
 	@OneToMany(mappedBy = "client") // Anotação de um para muitos, dizendo que do outro lado esta mapeado pelo client
 	private List<Order> orders = new ArrayList<>(); // coleção de list somente get
 	
