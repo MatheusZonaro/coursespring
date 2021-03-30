@@ -8,15 +8,17 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 @Entity
 @Table(name = "tb_product")
-public class Product implements Serializable{
+public class Product implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -24,13 +26,15 @@ public class Product implements Serializable{
 	private String desciption;
 	private Double price;
 	private String imgUrl;
-	
+
 	// Set e map sao interfaces, n podem ser instanciadas, entao utilizam hashset
-	@Transient
-	private Set<Category> categories = new HashSet<>(); // Garantir que n comec nula, precisod ela vazia mais instaciada;
-	
+	@ManyToMany // Aqui abaixo para fazer os inners join de tables muitos para muitos
+	@JoinTable(name = "tb_product_category", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "category_id"))
+	private Set<Category> categories = new HashSet<>(); // Garantir que n comec nula, precisod ela vazia mais
+														// instaciada;
+
 	public Product() {
-		
+
 	}
 
 	public Product(Long id, String name, String desciption, Double price, String imgUrl) {
@@ -114,5 +118,5 @@ public class Product implements Serializable{
 			return false;
 		return true;
 	}
-	
+
 }
